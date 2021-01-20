@@ -2,12 +2,16 @@ package hiber.dao;
 
 import hiber.model.Car;
 import hiber.model.User;
+import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +35,7 @@ public class UserDaoImp implements UserDao {
 
    @Override
    public User getUserByCar(String model, int series) {
-      String hql = "FROM User WHERE car.model = :parModel AND car.series = :parSeries";
+      String hql = "FROM User u JOIN FETCH u.car WHERE u.car.model = :parModel AND u.car.series = :parSeries";
       return (User) sessionFactory
               .getCurrentSession()
               .createQuery(hql)
