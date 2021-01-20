@@ -31,16 +31,13 @@ public class UserDaoImp implements UserDao {
 
    @Override
    public User getUserByCar(String model, int series) {
-      String carId = "FROM Car WHERE "
-              + "model = :parModel"
-              + " AND SERIES = :parSeries";
-      Query subQuery = sessionFactory.getCurrentSession().createQuery(carId);
-      subQuery.setParameter("parModel", model);
-      subQuery.setParameter("parSeries", series);
-      Car car = (Car) subQuery.setMaxResults(1).getSingleResult();
-      long id = car.getId();
-      Query query = sessionFactory.getCurrentSession().createQuery("FROM User WHERE car_id = :car_id");
-      query.setParameter("car_id", id);
-      return (User) query.getSingleResult();
+      String hql = "FROM User WHERE car.model = :parModel AND car.series = :parSeries";
+      return (User) sessionFactory
+              .getCurrentSession()
+              .createQuery(hql)
+              .setParameter("parModel", model)
+              .setParameter("parSeries", series)
+              .setMaxResults(1)
+              .uniqueResult();
    }
 }
