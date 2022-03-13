@@ -1,19 +1,11 @@
 package hiber.dao;
 
-import hiber.model.Car;
 import hiber.model.User;
-import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class UserDaoImp implements UserDao {
@@ -29,18 +21,18 @@ public class UserDaoImp implements UserDao {
    @Override
    @SuppressWarnings("unchecked")
    public List<User> listUsers() {
-      TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery("FROM User");
+      TypedQuery<User> query=sessionFactory.getCurrentSession().createQuery("from User");
       return query.getResultList();
    }
 
    @Override
    public User getUserByCar(String model, int series) {
-      String hql = "FROM User u JOIN FETCH u.car WHERE u.car.model = :parModel AND u.car.series = :parSeries";
+      String hql = "from User user where user.car.model = :model and user.car.series = :series";
       return (User) sessionFactory
               .getCurrentSession()
               .createQuery(hql)
-              .setParameter("parModel", model)
-              .setParameter("parSeries", series)
+              .setParameter("model", model)
+              .setParameter("series", series)
               .setMaxResults(1)
               .uniqueResult();
    }

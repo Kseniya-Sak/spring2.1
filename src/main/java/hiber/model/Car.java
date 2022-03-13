@@ -1,8 +1,5 @@
 package hiber.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-
 import javax.persistence.*;
 
 
